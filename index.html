@@ -1,107 +1,77 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agro Forte, Futuro Sustentável</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<script>
+    // --- 1. ANIMAÇÃO DE REVELAR/FECHAR O CARD ---
+    function toggleCard(card) {
+        card.classList.toggle('ativo');
+        
+        const botao = card.querySelector('.btn-revelar');
+        if (card.classList.contains('ativo')) {
+            botao.textContent = 'Fechar';
+            // Pequeno efeito vibratório no botão ao abrir (estilo sentido aranha)
+            botao.style.transform = 'scale(1.1)';
+            setTimeout(() => botao.style.transform = 'scale(1)', 150);
+        } else {
+            botao.textContent = 'Ver';
+        }
+    }
 
-    <header>
-        <div class="logo">AgroSustentável</div>
-        <nav>
-            <a href="#inicio">Início</a>
-            <a href="#agronegocio">Agronegócio</a>
-            <a href="#familiar">Agricultura Familiar</a>
-            <a href="#sustentabilidade">Sustentabilidade</a>
-        </nav>
-    </header>
+    // --- 2. EFEITO DE DIGITAÇÃO (INTRODUÇÃO) ---
+    function efeitoDigitacao() {
+        const elementoIntro = document.querySelector('.introducao p');
+        const textoOriginal = elementoIntro.innerHTML;
+        elementoIntro.innerHTML = ''; // Limpa o texto inicial
+        
+        let i = 0;
+        // Velocidade da digitação em milissegundos
+        const velocidade = 15; 
 
-    <section id="inicio" class="hero">
-        <div class="hero-content">
-            <h1>Agro Forte, Futuro Sustentável</h1>
-            <p>O equilíbrio perfeito entre a alta produção e a preservação do meio ambiente.</p>
-            <a href="#sustentabilidade" class="btn">Saiba Mais</a>
-        </div>
-    </section>
+        function digitar() {
+            if (i < textoOriginal.length) {
+                // Se encontrar uma tag HTML (como <br>), avança até o final dela para não quebrar o layout
+                if (textoOriginal.charAt(i) === '<') {
+                    i = textoOriginal.indexOf('>', i) + 1;
+                } else {
+                    i++;
+                }
+                elementoIntro.innerHTML = textoOriginal.substring(0, i);
+                setTimeout(digitar, velocidade);
+            }
+        }
+        digitar();
+    }
 
-    <main class="container">
-        <section class="intro-text">
-            <h2>Os Pilares do Campo</h2>
-            <p>Para alimentar o mundo e proteger o planeta, a força da tecnologia do agronegócio une-se ao cuidado e à tradição da agricultura familiar.</p>
-        </section>
+    // --- 3. ANIMAÇÃO AO ROLAR A PÁGINA (SCROLL REVEAL) ---
+    function animarScroll() {
+        const cards = document.querySelectorAll('.card');
+        
+        // Configura o observador para detectar quando o card aparece na tela
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    // Adiciona um pequeno atraso (delay) baseado na posição do card para um efeito cascata
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0) scale(1)';
+                    }, index * 150); // 150ms de diferença entre cada card
+                    
+                    observer.unobserve(entry.target); // Para de observar após animar
+                }
+            });
+        }, {
+            threshold: 0.1 // Ativa quando 10% do card estiver visível
+        });
 
-        <div class="tabs">
-            <button class="tab-btn active" onclick="openTab(event, 'agronegocio')">Agronegócio</button>
-            <button class="tab-btn" onclick="openTab(event, 'familiar')">Agricultura Familiar</button>
-        </div>
+        // Configuração inicial dos cards antes de serem animados
+        cards.forEach((card) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(40px) scale(0.95)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            observer.observe(card);
+        });
+    }
 
-        <div id="agronegocio" class="tab-content active-content">
-            <div class="grid-content">
-                <div class="text-block">
-                    <h3>Grande Escala e Alta Tecnologia</h3>
-                    <p>O agronegócio é o motor econômico que garante a segurança alimentar global. Através da tecnologia de ponta, como drones, sensores IoT e análise de dados (Agricultura 4.0), o setor otimiza o uso de recursos como água e fertilizantes, aumentando a produtividade sem necessariamente expandir as áreas de cultivo.</p>
-                    <ul class="highlights">
-                        <li>Alta produtividade por hectare.</li>
-                        <li>Exportação e fortalecimento do PIB.</li>
-                        <li>Tecnologia de precisão contra o desperdício.</li>
-                    </ul>
-                </div>
-                <div class="image-block">
-                    <img src="https://images.unsplash.com/photo-1592982537447-744077110b90?auto=format&fit=crop&q=80&w=800" alt="Colheitadeira moderna em campo de soja">
-                </div>
-            </div>
-        </div>
-
-        <div id="familiar" class="tab-content">
-            <div class="grid-content">
-                <div class="text-block">
-                    <h3>Tradição, Alimento e Comunidade</h3>
-                    <p>A agricultura familiar é responsável pela maior parte dos alimentos que chegam diariamente à mesa das populações locais. Ela desempenha um papel crucial na preservação da biodiversidade, no manejo de cultivos tradicionais e no desenvolvimento socioeconômico das comunidades rurais, mantendo o homem no campo com dignidade.</p>
-                    <ul class="highlights">
-                        <li>Base da alimentação básica e orgânica.</li>
-                        <li>Geração de empregos no interior do país.</li>
-                        <li>Preservação cultural e de técnicas manejo natural.</li>
-                    </ul>
-                </div>
-                <div class="image-block">
-                    <img src="https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=800" alt="Produtor rural cuidando de horta familiar">
-                </div>
-            </div>
-        </div>
-
-        <hr class="separator">
-
-        <section id="sustentabilidade" class="sustentabilidade-section">
-            <h2>O Equilíbrio Sustentável</h2>
-            <p class="subtitle">Como a produção e o meio ambiente caminham juntos para as próximas gerações.</p>
-            
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">🌱</div>
-                    <h3>Manejo Direto</h3>
-                    <p>Práticas que evitam a erosão do solo, mantendo a cobertura vegetal e os nutrientes naturais da terra.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">💧</div>
-                    <h3>Uso da Água</h3>
-                    <p>Sistemas de irrigação inteligente e gotejamento que reduzem drasticamente o desperdício de recursos hídricos.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🔄</div>
-                    <h3>Integração ILPF</h3>
-                    <p>A Integração Lavoura-Pecuária-Floresta otimiza o espaço, recupera áreas degradadas e neutraliza emissões de carbono.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 AgroSustentável. Todos os direitos reservados.</p>
-        <p>Desenvolvido para o futuro do nosso planeta.</p>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+    // --- INICIALIZAÇÃO DAS ANIMAÇÕES ---
+    window.addEventListener('DOMContentLoaded', () => {
+        efeitoDigitacao();
+        animarScroll();
+    });
+</script>
