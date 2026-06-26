@@ -1,48 +1,74 @@
-/* --- CONFIGURAÇÕES E VARIÁVEIS --- */
-:root {
-    --vermelho-aranha: #DE283B;
-    --vermelho-escuro: #9B1C2A;
-    --azul-aranha: #2A75D3;
-    --azul-escuro: #132D64;
-    --preto-fundo: #0B0E14;
-    --preto-card: #161B26;
-    --branco: #F5F7FA;
-    --texto-mutado: #A0AEC0;
-    --borda-glow: rgba(42, 117, 211, 0.3);
+// 1. ANIMAÇÃO DE REVELAR/FECHAR O CARD (CLIQUE)
+function toggleCard(card) {
+    // Alterna a classe que o CSS usa para expandir o card
+    card.classList.toggle('ativo');
+    
+    const botao = card.querySelector('.btn-revelar');
+    if (card.classList.contains('ativo')) {
+        botao.textContent = 'Fechar';
+        // Pequeno pulo de feedback visual no botão (Efeito Sentido Aranha)
+        botao.style.transform = 'scale(1.1)';
+        setTimeout(() => botao.style.transform = 'scale(1)', 150);
+    } else {
+        botao.textContent = 'Ver';
+    }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+// 2. EFEITO DE DIGITAÇÃO NA INTRODUÇÃO
+function efeitoDigitacao() {
+    const elementoIntro = document.querySelector('.introducao p');
+    if (!elementoIntro) return;
+
+    const textoOriginal = elementoIntro.innerHTML;
+    elementoIntro.innerHTML = ''; // Esvazia para começar a digitar
+    
+    let i = 0;
+    const velocidade = 15; // Tempo em milissegundos entre cada letra
+
+    function digitar() {
+        if (i < textoOriginal.length) {
+            // Ignora as tags HTML (como <br>) para não quebrar a estrutura durante a digitação
+            if (textoOriginal.charAt(i) === '<') {
+                i = textoOriginal.indexOf('>', i) + 1;
+            } else {
+                i++;
+            }
+            elementoIntro.innerHTML = textoOriginal.substring(0, i);
+            setTimeout(digitar, velocidad);
+        }
+    }
+    digitar();
 }
 
-body {
-    background-color: var(--preto-fundo);
-    color: var(--branco);
-    overflow-x: hidden;
-    /* Linhas cruzadas que lembram a textura do uniforme do herói */
-    background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
+// 3. ANIMAÇÃO DOS CARDS AO ROLAR A PÁGINA (SCROLL REVEAL)
+function animarScroll() {
+    const cards = document.querySelectorAll('.card');
+    if (cards.length === 0) return;
+    
+    // Cria um observador para monitorar a visibilidade dos cards na tela
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                // Aplica um delay sequencial para o efeito cascata (um por um)
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0) scale(1)';
+                }, index * 150); 
+                
+                observer.unobserve(entry.target); // Para de assistir após o card aparecer
+            }
+        });
+    }, {
+        threshold: 0.1 // Ativa quando 10% do card estiver na tela
+    });
+
+    // Configura o estado inicial (escondido) de cada card antes da animação
+    cards.forEach((card) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(40px) scale(0.95)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        observer.observe(card);
+    });
 }
 
-/* --- HEADER (Estilo Poster Cinematográfico) --- */
-header {
-    position: relative;
-    background: linear-gradient(135deg, var(--vermelho-escuro) 0%, var(--vermelho-aranha) 50%, var(--azul-escuro) 100%);
-    text-align: center;
-    padding: 80px 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-    border-bottom: 5px solid var(--azul-aranha);
-}
-
-header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.4) 100%);
-    pointer-events: none;
-}
+// EXECUTA AS FUNÇÕES ASSIM QUE A P
