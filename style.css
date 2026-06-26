@@ -1,294 +1,205 @@
-/* Configurações Gerais e Resets */
+/* --- CONFIGURAÇÕES E VARIÁVEIS --- */
+:root {
+    --vermelho-aranha: #DE283B;
+    --vermelho-escuro: #9B1C2A;
+    --azul-aranha: #2A75D3;
+    --azul-escuro: #132D64;
+    --preto-fundo: #0B0E14;
+    --preto-card: #161B26;
+    --branco: #F5F7FA;
+    --texto-mutado: #A0AEC0;
+    --borda-glow: rgba(42, 117, 211, 0.3);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    scroll-behavior: smooth;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
 }
 
 body {
-    background-color: #fafdff;
-    color: #2b2d42;
-    line-height: 1.6;
+    background-color: var(--preto-fundo);
+    color: var(--branco);
+    overflow-x: hidden;
+    /* Linhas cruzadas que lembram a textura do uniforme do herói */
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
 }
 
-/* Cabeçalho */
+/* --- HEADER (Estilo Poster Cinematográfico) --- */
 header {
-    background-color: #240046; /* Roxo Escuro */
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 10%;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-header .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ff007f; /* Rosa Vibrante */
-}
-
-header nav a {
-    color: #fff;
-    text-decoration: none;
-    margin-left: 20px;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-header nav a:hover {
-    color: #00b4d8; /* Azul Claro */
-}
-
-/* Banner Principal (Hero) */
-.hero {
-    background: linear-gradient(rgba(36, 0, 70, 0.6), rgba(255, 0, 127, 0.4)), 
-                url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&q=80&w=1600') no-repeat center center/cover;
-    height: 70vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: relative;
+    background: linear-gradient(135deg, var(--vermelho-escuro) 0%, var(--vermelho-aranha) 50%, var(--azul-escuro) 100%);
     text-align: center;
-    color: #fff;
-    padding: 0 20px;
+    padding: 80px 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    border-bottom: 5px solid var(--azul-aranha);
 }
 
-.hero-content h1 {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
 }
 
-.hero-content p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.btn {
-    background-color: #0077b6; /* Azul */
-    color: #fff;
-    padding: 12px 30px;
-    text-decoration: none;
-    border-radius: 25px;
-    font-weight: bold;
-    transition: background 0.3s, transform 0.2s;
+header h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--branco);
+    text-shadow: 
+        3px 3px 0px var(--azul-escuro),
+        5px 5px 15px rgba(0, 0, 0, 0.6);
+    transform: skewX(-5deg); /* Inclinação estilo logotipo de quadrinhos */
     display: inline-block;
 }
 
-.btn:hover {
-    background-color: #ff007f; /* Muda para Rosa no Hover */
-    transform: translateY(-2px);
+header p {
+    margin-top: 15px;
+    font-size: 1.3rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
 }
 
-/* Conteúdo Principal */
-.container {
+/* --- CONTEÚDO PRINCIPAL --- */
+main {
     max-width: 1100px;
     margin: 50px auto;
-    padding: 0 20px;
+    padding: 0 25px;
 }
 
-.intro-text {
+.introducao {
     text-align: center;
-    margin-bottom: 40px;
+    max-width: 750px;
+    margin: 0 auto 50px auto;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--texto-mutado);
+    min-height: 80px; /* Evita que a página mude de tamanho enquanto o JS "digita" o texto */
 }
 
-.intro-text h2 {
-    color: #240046; /* Roxo */
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-}
-
-/* Sistema de Abas */
-.tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #e0e0e0;
-}
-
-.tab-btn {
-    background: none;
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    color: #666;
-    font-weight: 600;
-    transition: all 0.3s;
-}
-
-.tab-btn:hover {
-    color: #0077b6; /* Azul */
-}
-
-.tab-btn.active {
-    color: #ff007f; /* Rosa para a aba ativa */
-    border-bottom: 4px solid #ff007f;
-    margin-bottom: -2px;
-}
-
-.tab-content {
-    display: none;
-    animation: fadeIn 0.5s ease;
-}
-
-.active-content {
-    display: block;
-}
-
-/* Layout em Grid para o conteúdo das abas */
-.grid-content {
+/* --- GRID DE CARDS --- */
+.grid-curiosidades {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: center;
-}
-
-.text-block h3 {
-    color: #7209b7; /* Roxo Intermediário */
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-}
-
-.text-block p {
-    color: #4a4e69;
-    margin-bottom: 20px;
-}
-
-.highlights {
-    list-style-type: none;
-}
-
-.highlights li {
-    margin-bottom: 10px;
-    padding-left: 25px;
-    position: relative;
-    color: #4a4e69;
-}
-
-.highlights li::before {
-    content: "✔";
-    position: absolute;
-    left: 0;
-    color: #00b4d8; /* Azul Claro nos marcadores */
-    font-weight: bold;
-}
-
-.image-block img {
-    width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(114, 9, 183, 0.15);
-    object-fit: cover;
-    height: 350px;
-}
-
-.separator {
-    margin: 60px 0;
-    border: 0;
-    height: 1px;
-    background: #e0e0e0;
-}
-
-/* Seção Sustentabilidade (Cards) */
-.sustentabilidade-section {
-    text-align: center;
-}
-
-.sustentabilidade-section h2 {
-    color: #240046;
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-}
-
-.subtitle {
-    color: #666;
-    margin-bottom: 40px;
-}
-
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
 }
 
+/* --- CARDS --- */
 .card {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    transition: transform 0.3s, box-shadow 0.3s;
-    border-top: 4px solid #7209b7; /* Detalhe Roxo nos cards */
+    background-color: var(--preto-card);
+    border: 1px solid var(--borda-glow);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    /* O estado inicial de animação (opacity e transform) será controlado dinamicamente pelo JS */
 }
 
+/* Efeito Hover do Card (Foco e Elevação) */
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(255, 0, 127, 0.15);
-    border-top-color: #ff007f; /* Muda para rosa ao passar o mouse */
+    transform: translateY(-8px) scale(1.02) !important; /* Mantém o efeito elástico mesmo após o JS carregar */
+    border-color: var(--vermelho-aranha);
+    box-shadow: 0 15px 30px rgba(222, 40, 59, 0.2);
 }
 
-.card-icon {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
+/* Topo do Card */
+.card-header {
+    background: linear-gradient(90deg, #1e2638 0%, var(--azul-escuro) 100%);
+    padding: 22px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.3s ease;
 }
 
-.card h3 {
-    color: #240046;
-    margin-bottom: 12px;
+/* Botão de Ação */
+.btn-revelar {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--white);
+    font-color: var(--branco);
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.card p {
-    color: #666;
-    font-size: 0.95rem;
+.card:hover .btn-revelar {
+    background: var(--azul-aranha);
+    border-color: var(--azul-aranha);
 }
 
-/* Rodapé */
+/* Corpo Interno do Card */
+.card-body {
+    padding: 25px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #E2E8F0;
+    background: radial-gradient(circle at bottom right, rgba(42, 117, 211, 0.05), transparent);
+}
+
+/* --- ESTADO ATIVO (QUANDO CLICADO) --- */
+.conteudo-oculto {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 25px;
+    overflow: hidden;
+    transition: all 0.4s ease-in-out; /* Transição suave que trabalha junto com o clique do JS */
+}
+
+.card.ativo .conteudo-oculto {
+    max-height: 200px; /* Permite a expansão fluida para baixo */
+    opacity: 1;
+    padding: 25px;
+}
+
+.card.ativo .card-header {
+    background: linear-gradient(90deg, var(--vermelho-escuro) 0%, var(--vermelho-aranha) 100%);
+}
+
+.card.ativo .btn-revelar {
+    background: var(--branco);
+    color: var(--vermelho-aranha);
+    border-color: var(--branco);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* --- FOOTER --- */
 footer {
-    background-color: #240046; /* Roxo Escuro */
-    color: #f72585; /* Texto Rosa Claro */
     text-align: center;
-    padding: 30px 20px;
-    margin-top: 60px;
-    font-size: 0.9rem;
+    padding: 40px 20px;
+    margin-top: 80px;
+    background-color: #07090d;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--texto-mutado);
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
 }
 
-footer p {
-    margin: 5px 0;
-}
-
-/* Animação Simples */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsividade */
+/* --- RESPONSIVIDADE --- */
 @media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        padding: 15px;
+    header h1 {
+        font-size: 2.5rem;
     }
-    header nav {
-        margin-top: 15px;
+    header p {
+        font-size: 1.1rem;
     }
-    header nav a {
-        margin: 0 10px;
-    }
-    .hero-content h1 {
-        font-size: 2.2rem;
-    }
-    .grid-content {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    .image-block img {
-        height: 250px;
+    main {
+        margin: 30px auto;
     }
 }
